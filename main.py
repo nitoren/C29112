@@ -44,9 +44,9 @@ class Human:
         self.home = House()
 
     def get_car(self):
-        self.home = Auto(brands_of_car)
+        self.car = Auto(brands_of_car)
 
-    def job(self):
+    def get_job(self):
         if self.car.drive():
             pass
         else:
@@ -107,25 +107,82 @@ class Human:
         self.home.mess = 0
 
     def to_repair(self):
-        self.car.strangth += 100
+        self.car.strength += 100
         self.money -= 50
 
     def days_indexes(self, day):
-        day = f"Today the {day} of {self.name}'s life"
+        day = f" Today the {day} of {self.name}'s life"
         print(f"{day:=^50}", "\n")
         human_indexes = self.name + "'s indexes"
-        print(f"{human_indexes:^50}", '\n')
+        print(f"{human_indexes:^50}", "\n")
         print(f"Money - {self.money}")
         print(f"Satiety - {self.satiety}")
         print(f"Gladness - {self.gladness}")
         home_indexes = "Home indexes"
-        print(f"{human_indexes:^50}", '\n')
-        print(f"Food - {self.food}")
-        print(f"Mess - {self.mess}")
-        car_indexes = f"{self.car.brand}"
-        print(f"{car_indexes:^50}", '\n')
-        print(f"Fuel - {self.car.fuel}")
-        print(f"Strangth - {self.strangth}")
+        print(f"{home_indexes:^50}", "\n")
+        print(f"Food - {self.home.food}")
+        print(f"Mess - {self.home.mess}")
+        car_indexes = f"{self.car.brand} car indexes"
+        print(f"{car_indexes:^50}", "\n")
+        print(f"fuel - {self.car.fuel}")
+        print(f"strength - {self.car.strength}")
+
+    def is_alive(self):
+        if self.gladness < 0:
+            print('Depression')
+            return False
+        if self.satiety < 0:
+            print('Dead.....')
+            return False
+        if self.money < -500:
+            print('Bankrupt.....')
+            return False
+
+    def live(self, day):
+        if self.is_alive() == False:
+            return False
+        if self.home is None:
+            print('Settled in the house')
+            self.get_home()
+        if self.car is None:
+            self.get_car()
+            print(f'I brought a car {self.car.brand}')
+
+        if self.job is None:
+            self.get_job()
+            print(f'I dont have job, going to get a job {self.job.job} with salary {self.job.salary}')
+
+        self.days_indexes(day)
+        dice = random.randint(1, 4)
+
+        if self.satiety < 20:
+            print('I will go eat')
+            self.eat()
+        elif self.gladness < 20:
+            if self.home.mess > 15:
+                print('I want to chill, but there is so mach mess... \n So I will clean the house')
+                self.clean_home()
+            else:
+                print('Lets chill')
+                self.chill()
+        elif self.money < 0:
+            print('Start working')
+            self.work()
+        elif self.car.strength < 15:
+            print('I need to repair my car')
+            self.to_repair()
+        elif dice == 1:
+            print('Lets chill')
+            self.chill()
+        elif dice == 2:
+            print('Start working')
+            self.work()
+        elif dice == 3:
+            print('Cleaning time')
+            self.clean_home()
+        elif dice == 4:
+            print('Time for treats!')
+            self.shopping(manage='delicacies')
 
 
 class Auto:
@@ -146,16 +203,23 @@ class Auto:
 
 
 class House:
-    def __int__(self):
+    def __init__(self):
         self.mess = 0
         self.food = 0
 
 
+class Job:
+    def __init__(self, job_list):
+        self.job = random.choice(list(job_list))
+        self.salary = job_list[self.job]['salary']
+        self.gladness_less = job_list[self.job]['gladness_less']
+
+
 job_list = {
-    'Java developer': {'salery': 50, 'gladness_less': 10},
-    'Pyton developer': {'salery': 40, 'gladness_less': 3},
-    'C++ developer': {'salery': 45, 'gladness_less': 25},
-    'Rust developer': {'salery': 70, 'gladness_less': 1},
+    'Java developer': {'salary': 50, 'gladness_less': 10},
+    'Pyton developer': {'salary': 40, 'gladness_less': 3},
+    'C++ developer': {'salary': 45, 'gladness_less': 25},
+    'Rust developer': {'salary': 70, 'gladness_less': 1},
 }
 brands_of_car = {
     'BMW': {'fuel': 100, 'strength': 100, 'consumption': 6},
@@ -164,15 +228,14 @@ brands_of_car = {
     'Ferrari': {'fuel': 80, 'strength': 120, 'consumption': 14},
 }
 
+nick = Human(name='Nick')
 
-class Job:
-    def __int__(self, job_list):
-        self.job = random.choice(list(job_list))
-        self.salary = job_list[self.job]['salary']
-        self.gladness_less = job_list[self.job]['gladness_less']
+for day in range(1, 8):
+    if nick.live(day) == False:
+        break
 
-class Friends:
-     def make_friends(self):
-            friend_name = input("Enter friend's name: ")
-            self.friends
 # print(list(job_list))
+# class Friends:
+#      def make_friends(self):
+#             friend_name = input("Enter friend's name: ")
+#             self.friends
