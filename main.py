@@ -1,4 +1,3 @@
-@@ -0,0 +1,180 @@
 # class Human:
 #    def __init__(self, name = 'Human'):
 #        self.name = name
