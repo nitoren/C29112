@@ -176,8 +176,3 @@ class Friends:
             friend_name = input("Enter friend's name: ")
             self.friends
 # print(list(job_list))
-
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
