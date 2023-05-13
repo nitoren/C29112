@@ -177,3 +177,7 @@ class Friends:
             self.friends
 # print(list(job_list))
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
