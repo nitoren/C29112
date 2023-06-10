@@ -1,14 +1,60 @@
 import random
 
-words = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"]
+
+def choose_game():
+    print("Виберіть тип гри:")
+    print("1. Математичні рівняння")
+    print("2. Вгадування слів")
+
+    choice = input("Ваш вибір (1 або 2): ")
+
+    if choice == '1':
+        play_math_game()
+    elif choice == '2':
+        play_word_game()
+    else:
+        print("Невірний вибір. Спробуйте ще раз.")
+        choose_game()
 
 
-def hangman():
+def play_math_game():
+    print("Гра Математичні рівняння")
+    print("Спробуйте вирішити рівняння.")
+
+    num1 = random.randint(1, 10)
+    num2 = random.randint(1, 10)
+    operator = random.choice(['+', '-', '*'])
+
+    if operator == '+':
+        solution = num1 + num2
+    elif operator == '-':
+        solution = num1 - num2
+    else:
+        solution = num1 * num2
+
+    equation = f"{num1} {operator} {num2} = ?"
+
+    while True:
+        print(equation)
+        guess = input("Введіть відповідь: ")
+
+        if guess.isdigit():
+            if int(guess) == solution:
+                print("Ви вирішили рівняння! Вітаємо!")
+                break
+            else:
+                print("Невірна відповідь. Спробуйте ще раз.")
+        else:
+            print("Невірний формат відповіді. Введіть число.")
+
+
+def play_word_game():
+    words = ["apple", "banana", "cherry", "date", "elderberry", "fig", "grape"]
     word = random.choice(words)
     attempts = 6
     guessed_letters = []
 
-    print("Гра Віселиця")
+    print("Гра Вгадування слів")
     print("Спробуйте вгадати загадане слово.")
 
     while True:
@@ -109,4 +155,4 @@ def draw_hangman(attempts):
     print(stages[6 - attempts])
 
 
-hangman()
+choose_game()
