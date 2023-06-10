@@ -21,31 +21,41 @@ def play_math_game():
     print("Гра Математичні рівняння")
     print("Спробуйте вирішити рівняння.")
 
-    num1 = random.randint(1, 10)
-    num2 = random.randint(1, 10)
-    operator = random.choice(['+', '-', '*'])
+    attempts = 6
 
-    if operator == '+':
-        solution = num1 + num2
-    elif operator == '-':
-        solution = num1 - num2
-    else:
-        solution = num1 * num2
+    while attempts > 0:
+        num1 = random.randint(1, 10)
+        num2 = random.randint(1, 10)
+        operator = random.choice(['+', '-', '*'])
 
-    equation = f"{num1} {operator} {num2} = ?"
+        if operator == '+':
+            solution = num1 + num2
+        elif operator == '-':
+            solution = num1 - num2
+        else:
+            solution = num1 * num2
 
-    while True:
+        equation = f"{num1} {operator} {num2} = ?"
+
         print(equation)
         guess = input("Введіть відповідь: ")
 
-        if guess.isdigit():
-            if int(guess) == solution:
-                print("Ви вирішили рівняння! Вітаємо!")
-                break
-            else:
-                print("Невірна відповідь. Спробуйте ще раз.")
-        else:
+        try:
+            guess = int(guess)
+        except ValueError:
             print("Невірний формат відповіді. Введіть число.")
+            continue
+
+        if guess == solution:
+            print("Ви вирішили рівняння! Вітаємо!")
+            break
+        else:
+            print("Невірна відповідь. Спробуйте ще раз.")
+            attempts -= 1
+            draw_hangman(attempts)
+
+    if attempts == 0:
+        print("Ви програли! Правильне рішення: ", solution)
 
 
 def play_word_game():
